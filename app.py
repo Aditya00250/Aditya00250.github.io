@@ -113,8 +113,13 @@ def index():
             download_dir = request.form.get('download_dir') or "downloads"
             poll = True if request.form.get('poll') == "yes" else False
             video_id = extract_video_id(video)
-            download_mp3(video_id, api_key, download_dir, poll)
-            message = f"Download initiated for video '{video_id}' in directory '{download_dir}'."
+            filepath = download_mp3(video_id, api_key, download_dir, poll)
+            if filepath:
+                filename = os.path.basename(filepath)
+                download_link = url_for('download_file', filename=filename)
+                message = f"Download completed for video '{video_id}'. <a href='{download_link}'>Click here to download the file</a>."
+            else:
+                message = "Error occurred during download."
         else:
             message = "Please provide a video URL or ID."
     return f'''
