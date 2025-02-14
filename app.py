@@ -110,16 +110,10 @@ def index():
         video = request.form.get('video')
         api_key = request.form.get('api_key') or "3a7e9844ffmsh5d0520e908fa6e7p1da7d9jsn9d8f1e787e46"
         if video:
-            download_dir = request.form.get('download_dir') or "downloads"
             poll = True if request.form.get('poll') == "yes" else False
             video_id = extract_video_id(video)
-            filepath = download_mp3(video_id, api_key, download_dir, poll)
-            if filepath:
-                filename = os.path.basename(filepath)
-                download_link = url_for('download_file', filename=filename)
-                message = f"Download completed for video '{video_id}'. <a href='{download_link}'>Click here to download the file</a>."
-            else:
-                message = "Error occurred during download."
+            download_mp3(video_id, api_key, download_dir, poll)
+            message = f"Download initiated for video '{video_id}' in directory '{download_dir}'."
         else:
             message = "Please provide a video URL or ID."
     return f'''
@@ -220,8 +214,6 @@ def index():
                 <input type="text" name="video" id="video" required>
                 <label for="api_key">API Key (optional):</label>
                 <input type="text" name="api_key" id="api_key">
-                <label for="download_dir">Download Directory (optional, default: downloads):</label>
-                <input type="text" name="download_dir" id="download_dir" placeholder="downloads">
                 <label for="poll">Poll until conversion is complete:</label>
                 <input type="checkbox" name="poll" id="poll" value="yes">
                 <br><br>
