@@ -73,7 +73,8 @@ def download_mp3(video_id, api_key, download_dir="downloads", poll=False):
     if r.status_code == 200:
         os.makedirs(download_dir, exist_ok=True)
         # Sanitize title for filename use if needed
-        filepath = os.path.join(download_dir, f"{title}.mp3")
+        sanitized_title = sanitize_filename(title)
+        filepath = os.path.join(download_dir, f"{sanitized_title}.mp3")
         with open(filepath, "wb") as f:
             for chunk in r.iter_content(chunk_size=1024):
                 if chunk:
@@ -119,7 +120,7 @@ def index():
     return f'''
     <html>
       <head>
-        <title>Spotify Styled YouTube to MP3 Downloader</title>
+        <title>Youtube -> mp3</title>
         <style>
           body {{
             margin: 0;
@@ -200,7 +201,7 @@ def index():
       <body>
         <div class="container">
           <div class="sidebar">
-            <h2>Spotify-like UI</h2>
+            <h2>Youtube to mp3 download</h2>
             <ul>
               <li><a href="/">Home</a></li>
               <li><a href="/downloads">Downloads</a></li>
