@@ -1,1 +1,6 @@
-pip3 install flask , argparse ,requests ,os ,re ,sys
+flask
+argparse
+requests
+os
+re
+sys
